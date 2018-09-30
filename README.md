@@ -1,8 +1,8 @@
-# file-store-project-v2
-File upload and retrieval Spring Boot Rest based Service.
+# filestore-security-v3
+Secured File upload and retrieval Spring Boot Rest based Service
 =====================
 
-A simple file system based archive with REST interface. An angularJS based web client is also included to test the service.
+A file system based archive with REST interface. An angularJS based web client is also included to test the service.
 
 The available Restful APIs as follows:
 
