@@ -7,28 +7,28 @@ A simple file system based archive with REST interface. An angularJS based web c
 The available Restful APIs as follows:
 
 * **Upload a file operation(max 2MB size):**
-*http://localhost:8787/fileUploaderApi/uploadfile?file={filename.xxx} POST*
+*httpss://localhost:8443/fileUploaderApi/uploadfile?file={filename.xxx} POST*
 
 * **Retrive a file from filesystem by file id operation:**
-*http://localhost:8787/fileUploaderApi/files/{uuid} GET*
+*https://localhost:8443/fileUploaderApi/files/{uuid} GET*
 
 * **Retrieve all files from store operation:**
-*http://localhost:8787/fileUploaderApi/files GET*
+*https://localhost:8443/fileUploaderApi/files GET*
 
 * **Delete all files from filesystem operation:**
-*http://localhost:8787/fileUploaderApi/files/deleteAll DELETE*
+*https://localhost:8443/fileUploaderApi/files/deleteAll DELETE*
 
 * **Swagger ui:**
-*http://localhost:8787/swagger-ui.html*
+*https://localhost:8443/swagger-ui.html*
 
 * **Swagger default:**
-*http://localhost:8787/v2/api-docs*
+*https://localhost:8443/v2/api-docs*
 
 How to Build and run ?
 -------------
 
 ```bash
-git clone https://github.com/amzg-steve/File-Store-Project.git
+git clone httpss://github.com/amzg-steve/File-Store-Project.git
 #After extracting the files
 cd File-Store-Project-master/spring-boot-angJs-fileuploader-rest
 ```
@@ -45,7 +45,7 @@ java -jar target/spring-boot-angJs-fileuploader-rest-0.0.1-SNAPSHOT.jar
 
 How to invoke the client application ?
 -------------
-**http://localhost:8787/index.html**
+**https://localhost:8443/index.html**
 
 Directory name where the uploaded files will be stored:
 -------------
