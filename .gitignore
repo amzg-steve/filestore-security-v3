@@ -6,4 +6,6 @@ fileStore/
 .factorypath
 .project
 .springBeans
+.idea/
+*.iml
 
