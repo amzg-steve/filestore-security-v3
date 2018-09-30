@@ -1,0 +1,17 @@
+#info: https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# MULTIPART
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+    
+#EMBEDDED SERVER and SSL CONFIGURATIONS
+server:
+  port: 8443
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:keystore.p12
+    key-alias: tomcat
+    key-store-password: changeit
+    
