@@ -1,4 +1,4 @@
-package com.stevesmedia.fileuploader.restapi.dao;
+package com.stevesmedia.filestore.restapi.dao;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -28,8 +28,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.FileSystemUtils;
 
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocMetaData;
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocument;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
 
 @Repository
 public class FileUploaderServiceDaoFileSystemImpl implements FileUploaderServiceDao, Serializable {
@@ -134,9 +134,9 @@ public class FileUploaderServiceDaoFileSystemImpl implements FileUploaderService
 	public void saveMetaData(FileDocument document) throws IOException {
 		String path = getDirectoryPath(document);
 		Properties props = document.createProperties();
-		File f = new File(new File(path), METADATA_FILENAME);
-		OutputStream out = new FileOutputStream( f );
-		props.store(out, "File metadata");       
+		File file = new File(new File(path), METADATA_FILENAME);
+		OutputStream out = new FileOutputStream(file);
+		props.store(out, "File metadata");
 	}
 
 	private List<FileDocMetaData> findInFileSystem() throws IOException  {

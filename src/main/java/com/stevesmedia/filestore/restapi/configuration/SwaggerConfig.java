@@ -1,4 +1,4 @@
-package com.stevesmedia.fileuploader.restapi.configuration;
+package com.stevesmedia.filestore.restapi.configuration;
 
 import java.util.Collections;
 

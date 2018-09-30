@@ -1,11 +1,11 @@
-package com.stevesmedia.fileuploader.restapi.service;
+package com.stevesmedia.filestore.restapi.service;
 
 import java.util.List;
 
 import org.springframework.http.HttpEntity;
 
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocMetaData;
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocument;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
 
 
 /**
