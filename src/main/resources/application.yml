@@ -6,7 +6,7 @@ spring:
       max-file-size: 2MB
       max-request-size: 2MB
     
-#EMBEDDED SERVER CONFIGURATION
+#EMBEDDED SERVER and SSL CONFIGURATIONS
 server:
   port: 8443
   ssl:
@@ -14,3 +14,4 @@ server:
     key-store: classpath:keystore.p12
     key-alias: tomcat
     key-store-password: changeit
+    
