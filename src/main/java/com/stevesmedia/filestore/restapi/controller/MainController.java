@@ -1,4 +1,4 @@
-package com.stevesmedia.fileuploader.restapi.controller;
+package com.stevesmedia.filestore.restapi.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,14 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocMetaData;
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocument;
-import com.stevesmedia.fileuploader.restapi.service.FileUploaderService;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
+import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

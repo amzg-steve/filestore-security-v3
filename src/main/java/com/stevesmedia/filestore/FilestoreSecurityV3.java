@@ -1,4 +1,4 @@
-package com.stevesmedia.fileuploader;
+package com.stevesmedia.filestore;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-public class SpringBootAngJsFileuploaderRestApplication2 {
+public class FilestoreSecurityV3 {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootAngJsFileuploaderRestApplication2.class, args);
+		SpringApplication.run(FilestoreSecurityV3.class, args);
 	}
 }

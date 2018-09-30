@@ -1,4 +1,4 @@
-package com.stevesmedia.fileuploader.restapi.domainmodel;
+package com.stevesmedia.filestore.restapi.domainmodel;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.datastax.driver.core.utils.UUIDs;
-import com.stevesmedia.fileuploader.restapi.service.FileUploaderService;
+import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
 import lombok.Data;
 

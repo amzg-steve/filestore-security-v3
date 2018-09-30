@@ -1,4 +1,4 @@
-package com.stevesmedia.fileuploader.restapi.service;
+package com.stevesmedia.filestore.restapi.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
-import com.stevesmedia.fileuploader.restapi.dao.FileUploaderServiceDao;
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocMetaData;
-import com.stevesmedia.fileuploader.restapi.domainmodel.FileDocument;
+import com.stevesmedia.filestore.restapi.dao.FileUploaderServiceDao;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
+import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
 
 /**
  * The service implementation to save, find and get documents through a filesystem based storage. 

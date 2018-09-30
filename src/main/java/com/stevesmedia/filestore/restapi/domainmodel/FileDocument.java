@@ -1,4 +1,4 @@
-package com.stevesmedia.fileuploader.restapi.domainmodel;
+package com.stevesmedia.filestore.restapi.domainmodel;
 
 import java.io.Serializable;
 import java.util.Properties;
