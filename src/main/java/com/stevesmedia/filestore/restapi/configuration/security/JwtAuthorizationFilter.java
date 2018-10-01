@@ -16,6 +16,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 										HttpServletResponse response, 
 										FilterChain filterChain)
 										throws ServletException, IOException {
+		
+		filterChain.doFilter(request, response);
 
 	}
 

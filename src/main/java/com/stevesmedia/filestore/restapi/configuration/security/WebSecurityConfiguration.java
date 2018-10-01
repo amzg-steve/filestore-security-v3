@@ -48,6 +48,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(5);
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
@@ -74,14 +80,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			
 		
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.WebSecurity)
-	 */
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		super.configure(web);
-	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
@@ -93,11 +91,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.passwordEncoder(passwordEncoder());	
 	}
 	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(5);
-		
-	}
 	
+	/* (non-Javadoc)
+	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.WebSecurity)
+	 */
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		super.configure(web);
+	}
 
 }

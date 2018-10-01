@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stevesmedia.filestore.restapi.domainmodel.security.AuthToken;
 import com.stevesmedia.filestore.restapi.domainmodel.security.TokenAuthRequest;
 import com.stevesmedia.filestore.restapi.service.security.JwtUserDetailsProviderService;
 import com.stevesmedia.filestore.restapi.utils.JWTAuthException;
@@ -34,8 +35,8 @@ public class AuthController {
 	public ResponseEntity<?> generateJWT(@RequestBody @Valid TokenAuthRequest tokenReq) {
 		
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(tokenReq.getUsername(), 
-            		tokenReq.getPassword()));
+        	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+        			tokenReq.getUsername(), tokenReq.getPassword()));
         } catch (DisabledException exp) {
             throw new JWTAuthException("User is disabled!", exp);
         } catch (BadCredentialsException exp) {
@@ -45,8 +46,7 @@ public class AuthController {
         final UserDetails userDetails = jwtUserDetailsProviderService.loadUserByUsername(tokenReq.getUsername());
         final String token = jwtTokenUtils.generateToken(userDetails);
 
-        // Return the token
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new AuthToken(token));
 		
 	}
 
