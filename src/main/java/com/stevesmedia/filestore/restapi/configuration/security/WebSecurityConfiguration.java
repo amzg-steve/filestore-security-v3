@@ -35,10 +35,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private JwtAuthorizationFilter jwtAuthorizationFilter;
+	
+//    @Bean
+//    public JwtAuthorizationFilter jwtAuthFilter() throws Exception {
+//        return new JwtAuthorizationFilter();
+//    }
 
-	public WebSecurityConfiguration() {
-		super();
-	}
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#authenticationManagerBean()
@@ -71,7 +73,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests().antMatchers("/h2-console/**").permitAll()
 			.antMatchers("/authorize/**").permitAll()
-	        .antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+	        .antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js", "/v2/**", "**/swagger-ui.html/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -90,14 +92,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.userDetailsService(jwtUserDetailsProviderService)
 			.passwordEncoder(passwordEncoder());	
 	}
-	
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.WebSecurity)
-	 */
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		super.configure(web);
-	}
+
 
 }

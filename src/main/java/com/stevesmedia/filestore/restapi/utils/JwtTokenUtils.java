@@ -2,10 +2,9 @@ package com.stevesmedia.filestore.restapi.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import com.stevesmedia.filestore.restapi.domainmodel.security.Constants;
 
@@ -14,6 +13,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
 
+@Component
 public class JwtTokenUtils {
 	
     private Clock clock = DefaultClock.INSTANCE;
