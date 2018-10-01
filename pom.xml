@@ -10,7 +10,7 @@
 	<packaging>jar</packaging>
 
 	<name>springboot-angJs-filestore-with-security-v3</name>
-	<description>A File mangement restful service based project using Springboot</description>
+	<description>A File mangement restful service based project using Springboot with JWT security</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
