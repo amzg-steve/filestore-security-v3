@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,17 +42,18 @@ public class AuthController {
 	@PostMapping(value="/authorize")
 	public ResponseEntity<?> generateJWT(@RequestBody @Valid TokenAuthRequest tokenReq) {
 		
+    	Authentication authentication = null;
         try {
-        	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-        			tokenReq.getUsername(), tokenReq.getPassword()));
+        	authentication = authenticationManager.authenticate(
+        			new UsernamePasswordAuthenticationToken(tokenReq.getUsername(), tokenReq.getPassword()));
         } catch (DisabledException exp) {
-            throw new JWTAuthException("User is disabled!", exp);
+            throw new JWTAuthException("User is disabled", exp);
         } catch (BadCredentialsException exp) {
-            throw new JWTAuthException("Bad credentials!", exp);
+            throw new JWTAuthException("Bad credentials", exp);
         }
         
-        final UserDetails userDetails = jwtUserDetailsProviderService.loadUserByUsername(tokenReq.getUsername());
-        final String token = jwtTokenUtils.generateToken(userDetails);
+        //final UserDetails userDetails = jwtUserDetailsProviderService.loadUserByUsername(tokenReq.getUsername());
+        final String token = jwtTokenUtils.generateToken(authentication);
 
         return ResponseEntity.ok(new AuthToken(token));
 		

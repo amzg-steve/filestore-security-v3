@@ -2,6 +2,7 @@ package com.stevesmedia.filestore.restapi.domainmodel.security;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,6 +72,6 @@ public class User {
             name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
-    private List<Authority> authorities;
+    private Set<Authority> authorities;
   
 }

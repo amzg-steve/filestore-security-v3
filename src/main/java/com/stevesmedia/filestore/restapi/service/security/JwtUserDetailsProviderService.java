@@ -1,10 +1,9 @@
 package com.stevesmedia.filestore.restapi.service.security;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.stevesmedia.filestore.restapi.domainmodel.JwtUser;
-import com.stevesmedia.filestore.restapi.domainmodel.security.Authority;
 import com.stevesmedia.filestore.restapi.domainmodel.security.User;
 import com.stevesmedia.filestore.restapi.repository.UserRepository;
 
@@ -36,17 +34,18 @@ public class JwtUserDetailsProviderService implements UserDetailsService {
 								user.getLastname(),
 								user.getEmail(),
 								user.getPassword(),
-								mapToGrantedAuthorities(user.getAuthorities()),
+								mapToGrantedAuthorities(user),
 								user.getEnabled(),
 								user.getLastPasswordResetDate());
 		}
 	}
 
-	private List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
-		return authorities
-				.stream()
-				.map(authority -> new SimpleGrantedAuthority(authority.getName().name()))
-				.collect(Collectors.toList());
+	private Set<SimpleGrantedAuthority> mapToGrantedAuthorities(User user) {
+		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+		user.getAuthorities().forEach(role -> {
+			authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
+		});
+		return authorities;
 	}
 
 }
