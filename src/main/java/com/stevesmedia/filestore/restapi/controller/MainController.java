@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +33,9 @@ import io.swagger.annotations.ApiOperation;
  * REST web service for file uploading service.
  * All service calls are delegated to instances of {@link FileUploaderService}
  * 
- * /fileUploaderApi/uploadfile?file={file}  				   Uplolad file by POST
- *   file: A file posted in a multipart request 
+ * /fileUploaderApi/uploadfile?file={file}  				   
+ * Uplolad file by POST
+ * file: A file posted in a multipart request 
  * @author steves
  */
 @RestController
@@ -57,6 +59,7 @@ public class MainController {
 	 */
 	@PostMapping(value = "/uploadfile")
 	@ApiOperation(value = "operation to upload file to repo")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public String handleFileUpload(@RequestParam("file") MultipartFile file ) throws Exception {
 		
 		try {
@@ -86,6 +89,7 @@ public class MainController {
 	 */
 	@GetMapping(value="/files",  produces= {"application/json"})
 	@ApiOperation(value = "operation to retrieve all files available at repo")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public HttpEntity<List<FileDocMetaData>> retrieveDocuments() {
 		return new ResponseEntity<List<FileDocMetaData>>(fileUploaderService.findDocuments(),
 				new HttpHeaders(), HttpStatus.OK);
@@ -101,6 +105,7 @@ public class MainController {
 	 */
 	@GetMapping(value = "/files/{uuid}")
 	@ApiOperation(value = "operation to retrieve file based on id")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public HttpEntity<byte[]> getDocument(@PathVariable String uuid) {         
 
 		HttpHeaders httpHeaders = new HttpHeaders();
@@ -116,6 +121,7 @@ public class MainController {
 	 */
 	@DeleteMapping(value="/files/deleteAll")
 	@ApiOperation(value = "operation to delete all files from repo")
+    @PreAuthorize("hasRole('ADMIN')")
 	public HttpEntity<String> deleteAllFiles() {
 	
 		return fileUploaderService.deleteAll();
