@@ -59,19 +59,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 			//jwt token is immune since Stateless session policy
 			.csrf().disable()
-			.cors().disable()
+			//.cors().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 			.and()
-			//Stateless sessioncreation policy used
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				//Stateless sessioncreation policy used
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			.authorizeRequests().antMatchers("/h2-console/**").permitAll()
-			.antMatchers("/authorize/**").permitAll()
-	        .antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js", "/v2/**", "**/swagger-ui.html/**").permitAll()
-			.anyRequest().authenticated()
+				.authorizeRequests()
+				.antMatchers("/h2-console/**").permitAll()
+				.antMatchers("/authorize/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js", "/v2/**", "**/swagger-ui.html/**").permitAll()
+				.anyRequest().authenticated()
 			.and()
-			.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
-			.headers().frameOptions().sameOrigin().cacheControl();
+				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+				.headers().frameOptions().sameOrigin().cacheControl();
 			
 			
 		
