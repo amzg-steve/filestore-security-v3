@@ -31,10 +31,7 @@ public class AuthController {
 	@Autowired
 	private JwtTokenUtils jwtTokenUtils;
 
-	@Autowired
-	private JwtUserDetailsProviderService jwtUserDetailsProviderService;
-
-    @ExceptionHandler({JWTAuthException.class})
+	@ExceptionHandler({JWTAuthException.class})
     public ResponseEntity<String> handleAuthenticationException(JWTAuthException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
@@ -52,7 +49,6 @@ public class AuthController {
             throw new JWTAuthException("Bad credentials", exp);
         }
         
-        //final UserDetails userDetails = jwtUserDetailsProviderService.loadUserByUsername(tokenReq.getUsername());
         final String token = jwtTokenUtils.generateToken(authentication);
 
         return ResponseEntity.ok(new AuthToken(token));

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.stevesmedia.filestore.restapi.domainmodel.security.Constants;
+import com.stevesmedia.filestore.restapi.utils.JWTAuthException;
 import com.stevesmedia.filestore.restapi.utils.JwtTokenUtils;
 
 import io.jsonwebtoken.ExpiredJwtException;
