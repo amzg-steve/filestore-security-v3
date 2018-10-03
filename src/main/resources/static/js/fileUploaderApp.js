@@ -31,8 +31,9 @@ app.controller('fileUploadController', ['$scope', '$http', function($scope, $htt
        
        $http.post(url, data, config).then( function (response) {
 			$scope.uploadResult=response.data;
-		}, function (response) {
-			alert("File not selected or size exceeded 2MB");
+		}, function (err) {
+			console.log(err);
+			alert(err.data);
 		});
     };
 }]);

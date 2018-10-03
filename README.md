@@ -1,8 +1,14 @@
 # filestore-security-v3
-Secured File upload and retrieval Spring Boot Rest based Service
-=====================
+Secured File upload and retrieval Springboot Rest API Service
+===============================================================
 
-A file system based archive with REST interfaces. An angularJS based web client is also included to test the service.
+A file system based archive with REST interfaces. An angularJS based web client is also included to test the service.(The security components for UI are currently work in progress. You can test the apis independenly).
+
+Two users are currently loaded through the embedded H2 DB.
+
+* uname: admin pass: admin
+
+* uname: user pass: user
 
 The available Restful APIs as follows:
 
@@ -15,7 +21,7 @@ The available Restful APIs as follows:
 * **Retrieve all files from store operation:**
 *https://localhost:8443/fileUploaderApi/files GET*
 
-* **Delete all files from filesystem operation:**
+* **Delete all files from filesystem operation (Requires 'admin' credentials):**
 *https://localhost:8443/fileUploaderApi/files/deleteAll DELETE*
 
 * **Swagger ui:**
