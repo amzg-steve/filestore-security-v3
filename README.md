@@ -13,12 +13,10 @@ Two users are currently loaded through the embedded H2 DB.
 
 In order to access the service APIs you need to first make a request for JWT token from the authorization server with the request body format like {"username": "admin","password": "admin"}. The expiration of token is set at 20 minutes.
 
-* *POST* **https://localhost:8443/authorize**
+* POST **https://localhost:8443/authorize**
 
-
-The following service APIs are available. Please include the token received throught a header in the following format.
-* **Authorization : Bearer <token>**
-
+The following service APIs are available. While invoking an api please include the token obtained also throught a request header in the following format.
+** Authorization : Bearer** &#60;token&#62;
 
 * **Upload a file operation(max 2MB size):**
 * POST https://localhost:8443/fileUploader/api/uploadfile?file={filename.xxx}
