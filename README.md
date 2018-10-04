@@ -16,7 +16,7 @@ In order to access the service APIs you need to first make a request for JWT tok
 * POST **https://localhost:8443/authorize**
 
 The following service APIs are available. While invoking an api please include the token obtained also throught a request header in the following format.
-** Authorization : Bearer** &#60;token&#62;
+**Authorization : Bearer** &#60;token&#62;
 
 * **Upload a file operation(max 2MB size):**
 * POST https://localhost:8443/fileUploader/api/uploadfile?file={filename.xxx}
