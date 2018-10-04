@@ -61,7 +61,7 @@ How to invoke the client application ?
 
 Directory name where the uploaded files will be stored:
 -------------
-**spring-boot-angJs-fileuploader-rest/fileStore**
+**filestore-security-v3/fileStore**
 
 Each file will be stored within individual child folders with a metadata.properties file.
 
