@@ -19,7 +19,7 @@ app.directive('fileModel', [ '$parse', function($parse) {
 app.controller('fileUploadController', ['$scope', '$http', function($scope, $http) {
     $scope.doUploadFile = function(){
        var file = $scope.uploadedFile;
-       var url = "/fileUploaderApi/uploadfile";
+       var url = "/fileUploader/api/uploadfile";
        
        var data = new FormData();
        data.append('file', file);
@@ -41,7 +41,7 @@ app.controller('fileUploadController', ['$scope', '$http', function($scope, $htt
 app.controller('getFilesController', ['$scope', '$http', function($scope, $http) {
 	$scope.search = function() {
 		console.log("Stmt#1");
-		$http.get("/fileUploaderApi/files").then(function (response) {
+		$http.get("/fileUploader/api/files").then(function (response) {
 			$scope.metadataList = response.data;
 		}, function (err) {
 			alert(err.data);
@@ -51,7 +51,7 @@ app.controller('getFilesController', ['$scope', '$http', function($scope, $http)
 	};
 	
 	$scope.deletefiles = function() {
-		$http.delete("/fileUploaderApi/files/deleteAll").then(function (response) {
+		$http.delete("/fileUploader/api/files/deleteAll").then(function (response) {
 			$scope.deleteResult = response.data;
 			console.log("Stmt#4");
 			console.log(response);
