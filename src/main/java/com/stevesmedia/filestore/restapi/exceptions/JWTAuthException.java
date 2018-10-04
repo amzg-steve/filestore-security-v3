@@ -1,4 +1,4 @@
-package com.stevesmedia.filestore.restapi.utils;
+package com.stevesmedia.filestore.restapi.exceptions;
 
 /**
 * JWT authorization exception
