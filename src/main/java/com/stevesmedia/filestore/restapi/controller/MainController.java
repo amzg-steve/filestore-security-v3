@@ -33,13 +33,13 @@ import io.swagger.annotations.ApiOperation;
  * REST web service for file uploading service.
  * All service calls are delegated to instances of {@link FileUploaderService}
  * 
- * /fileUploaderApi/uploadfile?file={file}  				   
+ * /fileUploader/api/uploadfile?file={file}  				   
  * Uplolad file by POST
  * file: A file posted in a multipart request 
  * @author steves
  */
 @RestController
-@RequestMapping(value = "/fileUploaderApi")
+@RequestMapping(value = "/fileUploader/api")
 @Api(value = "document")
 public class MainController {
 
@@ -51,7 +51,7 @@ public class MainController {
 	/**
 	 * Adds a document to the file store.
 	 * 
-	 * Url: /fileUploaderApi/uploadfile?file={file} [POST]
+	 * Url: /fileUploader/api/uploadfile?file={file} [POST]
 	 * 
 	 * @param file A file posted in a multipart request
 	 * @return The meta data of the added document
@@ -83,7 +83,7 @@ public class MainController {
 	/**
 	 * Finds document in the archive.
 	 * 
-	 * Url: /fileUploaderApi/files [GET]
+	 * Url: /fileUploader/api/files [GET]
 	 * 
 	 * @return A list of document meta data
 	 */
@@ -98,7 +98,7 @@ public class MainController {
 	/**
 	 * Returns the document file from the store with the given UUID.
 	 * 
-	 * Url: /fileUploaderApi/files/{uuid} [GET]
+	 * Url: /fileUploader/api/files/{uuid} [GET]
 	 * 
 	 * @param id The UUID of a document
 	 * @return The document file
@@ -117,10 +117,10 @@ public class MainController {
 	/**
 	 * Deletes all files from repo
 	 * 
-	 * Url: /fileUploaderApi/files/deleteAll [DELETE]
+	 * Url: /fileUploader/api/files/deleteAll [DELETE]
 	 */
 	@DeleteMapping(value="/files/deleteAll")
-	@ApiOperation(value = "operation to delete all files from repo")
+	@ApiOperation(value = "Operation to delete all files from repository")
     @PreAuthorize("hasRole('ADMIN')")
 	public HttpEntity<String> deleteAllFiles() {
 	
