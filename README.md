@@ -6,23 +6,28 @@ A file system based archive with REST interfaces. An angularJS based web client 
 
 Two users are currently loaded through the embedded H2 DB.
 
-* uname: admin pass: admin
+* username: admin pass: admin
 
-* uname: user pass: user
+* username: user pass: user
 
-The available Restful APIs as follows:
+
+In order to access the service APIs you need to first make a request for JWT token from the authorization server with the request body format like {"username": "admin","password": "admin"}
+* *POST* **https://localhost:8443/authorize**
+
+
+The available Service APIs as follows.
 
 * **Upload a file operation(max 2MB size):**
-*https://localhost:8443/fileUploaderApi/uploadfile?file={filename.xxx} POST*
+*POST https://localhost:8443/fileUploaderApi/uploadfile?file={filename.xxx}*
 
 * **Retrive a file from filesystem by file id operation:**
-*https://localhost:8443/fileUploaderApi/files/{uuid} GET*
+* GET https://localhost:8443/fileUploaderApi/files/{uuid}*
 
 * **Retrieve all files from store operation:**
-*https://localhost:8443/fileUploaderApi/files GET*
+* GET https://localhost:8443/fileUploaderApi/files*
 
 * **Delete all files from filesystem operation (Requires 'admin' credentials):**
-*https://localhost:8443/fileUploaderApi/files/deleteAll DELETE*
+* DELETE https://localhost:8443/fileUploaderApi/files/deleteAll*
 
 * **Swagger ui:**
 *https://localhost:8443/swagger-ui.html*
