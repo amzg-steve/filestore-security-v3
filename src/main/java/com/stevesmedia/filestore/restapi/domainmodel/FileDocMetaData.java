@@ -3,24 +3,21 @@ package com.stevesmedia.filestore.restapi.domainmodel;
 import java.io.Serializable;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.datastax.driver.core.utils.UUIDs;
 import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Meta data of a document from an archive managed by {@link FileUploaderService}.
  * @author steves
  */
 @Data
+@Log4j2
 public class FileDocMetaData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger logger = LoggerFactory.getLogger(FileDocMetaData.class);
 
 	private static final String PROP_UUID = "id";
 	private static final String PROP_FILE_NAME = "file-name";
