@@ -24,7 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
-import com.stevesmedia.filestore.restapi.exceptions.FileOperationException;
+import com.stevesmedia.filestore.restapi.exceptions.FileNotFoundException;
 import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
 import io.swagger.annotations.Api;
@@ -100,7 +100,7 @@ public class MainFileOperationsController {
 		
 		List<FileDocMetaData> docs = fileUploaderService.findDocuments();
 		if (docs.isEmpty()) {
-			throw new FileOperationException("No files found at repo", null);
+			throw new FileNotFoundException("No files found at repo", null);
 
 		}
 		return new ResponseEntity<List<FileDocMetaData>>(fileUploaderService.findDocuments(),
@@ -123,7 +123,7 @@ public class MainFileOperationsController {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		FileDocument fileDoc = fileUploaderService.getDocumentFile(uuid);
 		if (fileDoc == null) {
-			throw new FileOperationException(uuid +" file not found", null);
+			throw new FileNotFoundException(uuid +" file not found", null);
 		}
 		String typeStr = fileDoc.getFileType();
         httpHeaders.setContentType(MediaType.valueOf(typeStr));

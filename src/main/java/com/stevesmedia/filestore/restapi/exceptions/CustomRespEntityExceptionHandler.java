@@ -12,6 +12,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.stevesmedia.filestore.restapi.domainmodel.ExceptionResponse;
 
+/**
+ * General exception handler for controller actions goes here
+ * @author us-photon
+ *
+ */
 @RestControllerAdvice
 @RestController
 public class CustomRespEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -24,8 +29,8 @@ public class CustomRespEntityExceptionHandler extends ResponseEntityExceptionHan
 
 	}
 	
-	@ExceptionHandler(FileOperationException.class)
-	public final ResponseEntity<Object> handleFilNotFoundException(FileOperationException ex, WebRequest request) throws Exception {
+	@ExceptionHandler(FileNotFoundException.class)
+	public final ResponseEntity<Object> handleFilNotFoundException(FileNotFoundException ex, WebRequest request) throws Exception {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), 404, 
 				HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.NOT_FOUND);
