@@ -28,11 +28,6 @@ public class AuthController {
 	
 	@Autowired
 	private JwtTokenUtils jwtTokenUtils;
-
-	@ExceptionHandler({JWTAuthException.class})
-    public ResponseEntity<String> handleAuthenticationException(JWTAuthException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-    }
     
 	@PostMapping(value="/authorize")
 	public ResponseEntity<?> generateJWT(@RequestBody @Valid TokenAuthRequest tokenReq) {
@@ -44,7 +39,7 @@ public class AuthController {
         } catch (DisabledException exp) {
             throw new JWTAuthException("User is disabled", exp);
         } catch (BadCredentialsException exp) {
-            throw new JWTAuthException("Bad credentials", exp);
+            throw new JWTAuthException("Invalid credentials", exp);
         }
         
         final String token = jwtTokenUtils.generateToken(authentication);

@@ -1,5 +1,6 @@
 package com.stevesmedia.filestore.restapi.controller;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,13 +22,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
+import com.stevesmedia.filestore.restapi.exceptions.FileOperationException;
 import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * REST web service for file uploading service.
@@ -41,9 +45,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/fileUploader/api")
 @Api(value = "document")
-public class MainController {
-
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+@Log4j2
+public class MainFileOperationsController {
 	
 	@Autowired
 	FileUploaderService fileUploaderService;
@@ -51,30 +54,35 @@ public class MainController {
 	/**
 	 * Adds a document to the file store.
 	 * 
-	 * Url: /fileUploader/api/uploadfile?file={file} [POST]
+	 * Url: /fileUploader/api/files?file={filename} [POST]
 	 * 
 	 * @param file A file posted in a multipart request
 	 * @return The meta data of the added document
 	 * @throws Exception 
 	 */
-	@PostMapping(value = "/uploadfile")
-	@ApiOperation(value = "operation to upload file to repo")
+	@PostMapping(value = "/files")
+	@ApiOperation(value = "Operation to upload new files to file repository")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	public String handleFileUpload(@RequestParam("file") MultipartFile file ) throws Exception {
-		
+	public ResponseEntity<Object> handleFileUpload(@RequestParam("file") MultipartFile file ) throws Exception {
+
 		try {
 			if(file == null || file.isEmpty()) {
-				return "Please select a file";
+				return ResponseEntity.badRequest().body("No valid file found in Request");
 			}
 			//get the local timestamp
 			LocalDateTime timeStamp = LocalDateTime.now();
 			//get the uploaded filesize
 			String fileSize = FileUtils.byteCountToDisplaySize(file.getSize());
-			FileDocument document = new FileDocument(file.getBytes(), file.getOriginalFilename(), timeStamp.toString(), fileSize );
-			fileUploaderService.save(document);
-			
-			return "You have successfully uploaded file: " + file.getOriginalFilename();
-			
+			String fileType = file.getContentType();
+			FileDocument document = new FileDocument(file.getBytes(), file.getOriginalFilename(), timeStamp.toString(), fileSize, fileType);
+			FileDocMetaData fileAdded = fileUploaderService.save(document);
+			URI newFileUri = ServletUriComponentsBuilder.fromCurrentRequest()
+					.path("/{id}")
+					.buildAndExpand(fileAdded.getUuid())
+					.toUri();
+
+			return ResponseEntity.created(newFileUri).body(newFileUri.toString());
+
 		} catch (Exception e) {
 			throw new Exception("File Upload Failed. Please ensure file size < 2MB");
 		}
@@ -88,11 +96,17 @@ public class MainController {
 	 * @return A list of document meta data
 	 */
 	@GetMapping(value="/files",  produces= {"application/json"})
-	@ApiOperation(value = "operation to retrieve all files available at repo")
+	@ApiOperation(value = "Operation to retrieve all files from file repo")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	public HttpEntity<List<FileDocMetaData>> retrieveDocuments() {
+	public HttpEntity<?> retrieveDocuments() {
+		
+		List<FileDocMetaData> docs = fileUploaderService.findDocuments();
+		if (docs.isEmpty()) {
+			throw new FileOperationException("No files found at repo", null);
+
+		}
 		return new ResponseEntity<List<FileDocMetaData>>(fileUploaderService.findDocuments(),
-				new HttpHeaders(), HttpStatus.OK);
+				new HttpHeaders(), HttpStatus.FOUND);
 	}
 
 	/**
@@ -109,8 +123,13 @@ public class MainController {
 	public HttpEntity<byte[]> getDocument(@PathVariable String uuid) {         
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.IMAGE_JPEG);
-		return new ResponseEntity<byte[]>(fileUploaderService.getDocumentFile(uuid), httpHeaders, HttpStatus.OK);
+		FileDocument fileDoc = fileUploaderService.getDocumentFile(uuid);
+		if (fileDoc == null) {
+			throw new FileOperationException(uuid +" file not found", null);
+		}
+		String typeStr = fileDoc.getFileType();
+        httpHeaders.setContentType(MediaType.valueOf(typeStr));
+		return new ResponseEntity<byte[]>(fileDoc.getFileData(), httpHeaders, HttpStatus.OK);
 		
 	}
 	
