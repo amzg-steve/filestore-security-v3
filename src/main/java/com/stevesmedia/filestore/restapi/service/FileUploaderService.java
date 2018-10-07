@@ -32,7 +32,7 @@ public interface FileUploaderService {
 	 * @param id The id of a document
 	 * @return A document file
 	 */
-	byte[] getDocumentFile(String id);
+	FileDocument getDocumentFile(String id);
 	
 	HttpEntity<String> deleteAll();
 }
