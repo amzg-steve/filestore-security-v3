@@ -27,4 +27,10 @@ public class ExceptionResponse {
 		this.reqDetails = reqDetails;
 	}
 
+	public ExceptionResponse() {
+		
+	}
+	
+	
+
 }

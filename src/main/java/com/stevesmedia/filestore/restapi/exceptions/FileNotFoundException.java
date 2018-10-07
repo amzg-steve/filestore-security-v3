@@ -1,10 +1,10 @@
 package com.stevesmedia.filestore.restapi.exceptions;
 
-public class FileOperationException extends RuntimeException {
+public class FileNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public FileOperationException(String message, Throwable cause) {
+	public FileNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
