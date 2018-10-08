@@ -79,6 +79,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				logger.info("authorizated user '{}', setting security context", username);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
+			} else {
+				logger.error("Token validation failed/revoked");
+				sendCustomErrorResponse(request, response, new Exception("Token validation failed/revoked"));
+				return;
 			}
 		}
 
@@ -91,6 +95,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 		ObjectMapper mapper = new ObjectMapper();
 		response.setContentType("application/json");
+		response.setStatus(401);
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), 401, 
 				HttpStatus.UNAUTHORIZED, exception.getMessage(), request.getRequestURI());
 		response.getWriter().write(mapper.writeValueAsString(exceptionResponse));

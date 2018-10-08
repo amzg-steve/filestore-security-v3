@@ -5,6 +5,9 @@ spring:
     multipart:
       max-file-size: 2MB
       max-request-size: 2MB
+    cache:
+      ehcache:
+      config: classpath:ehcache.xml
     
 #EMBEDDED SERVER and SSL CONFIGURATIONS
 server:
@@ -14,4 +17,5 @@ server:
     key-store: classpath:keystore.p12
     key-alias: tomcat
     key-store-password: changeit
+
     
