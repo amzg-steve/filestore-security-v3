@@ -55,12 +55,12 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public String revokeToken(String token) {
+		
 		boolean sucess = false;
 		sucess = jwtTokenUtils.removeTokenFromCache(token);
 		if (sucess) {
 			return "Token is removed";
 		}
-		
 		return "Token removal failed";
 	}
 
