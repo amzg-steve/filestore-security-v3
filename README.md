@@ -11,29 +11,30 @@ Two users are currently loaded through the embedded H2 DB.
 * username: user pass: user
 
 
-In order to access the service APIs you need to first make a request for JWT token from the authorization server with the request body format like {"username": "admin","password": "admin"}
-* *POST* **https://localhost:8443/authorize**
+In order to access the service APIs you need to first make a request for JWT token from the authorization server with the request body format like {"username": "admin","password": "admin"}. The expiration of token is set at 20 minutes.
 
+* POST **https://localhost:8443/authorize**
 
-The available Service APIs as follows.
+The following service APIs are available. While invoking an api please include the token obtained also throught a request header in the following format.
+**Authorization : Bearer** &#60;token&#62;
 
 * **Upload a file operation(max 2MB size):**
-*POST https://localhost:8443/fileUploaderApi/uploadfile?file={filename.xxx}*
+* POST https://localhost:8443/fileUploader/api/files?file={filename.xxx}
 
 * **Retrive a file from filesystem by file id operation:**
-* GET https://localhost:8443/fileUploaderApi/files/{uuid}*
+* GET https://localhost:8443/fileUploader/api/files/{uuid}
 
 * **Retrieve all files from store operation:**
-* GET https://localhost:8443/fileUploaderApi/files*
+* GET https://localhost:8443/fileUploader/api/files
 
 * **Delete all files from filesystem operation (Requires 'admin' credentials):**
-* DELETE https://localhost:8443/fileUploaderApi/files/deleteAll*
+* DELETE https://localhost:8443/fileUploader/api/files/deleteAll
 
 * **Swagger ui:**
-*https://localhost:8443/swagger-ui.html*
+* https://localhost:8443/swagger-ui.html
 
 * **Swagger default:**
-*https://localhost:8443/v2/api-docs*
+* https://localhost:8443/v2/api-docs
 
 How to Build and run ?
 -------------
@@ -60,7 +61,7 @@ How to invoke the client application ?
 
 Directory name where the uploaded files will be stored:
 -------------
-**spring-boot-angJs-fileuploader-rest/fileStore**
+**filestore-security-v3/fileStore**
 
 Each file will be stored within individual child folders with a metadata.properties file.
 

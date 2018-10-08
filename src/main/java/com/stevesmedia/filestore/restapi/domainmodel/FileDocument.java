@@ -13,8 +13,8 @@ public class FileDocument extends FileDocMetaData implements Serializable {
     
     private byte[] fileData;
     
-    public FileDocument( byte[] fileData, String fileName, String timeStamp, String fileSize) {
-        super(fileName, timeStamp, fileSize);
+    public FileDocument( byte[] fileData, String fileName, String timeStamp, String fileSize, String fileType) {
+        super(fileName, timeStamp, fileSize, fileType);
         this.fileData = fileData;
     }
 
@@ -23,7 +23,7 @@ public class FileDocument extends FileDocMetaData implements Serializable {
     }
     
     public FileDocument(FileDocMetaData metadata) {
-        super(metadata.getUuid(), metadata.getFileName(), metadata.getTimeStamp(), metadata.getFileSize());
+        super(metadata.getUuid(), metadata.getFileName(), metadata.getTimeStamp(), metadata.getFileSize(), metadata.getFileType());
     }
 
     public byte[] getFileData() {
@@ -34,7 +34,7 @@ public class FileDocument extends FileDocMetaData implements Serializable {
     }
     
     public FileDocMetaData getMetadata() {
-        return new FileDocMetaData(getUuid(), getFileName(), getTimeStamp(), getFileSize());
+        return new FileDocMetaData(getUuid(), getFileName(), getTimeStamp(), getFileSize(), getFileType());
     }
     
 }

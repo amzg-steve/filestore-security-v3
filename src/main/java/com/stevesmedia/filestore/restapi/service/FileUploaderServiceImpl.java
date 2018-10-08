@@ -27,7 +27,8 @@ public class FileUploaderServiceImpl implements FileUploaderService, Serializabl
 	@Override
 	public FileDocMetaData save(FileDocument document) {
 		docDao.insert(document); 
-        return document.getMetadata();	}
+        return document.getMetadata();
+    }
 
 	@Override
 	public List<FileDocMetaData> findDocuments() {
@@ -35,10 +36,10 @@ public class FileUploaderServiceImpl implements FileUploaderService, Serializabl
 	}
 
 	@Override
-	public byte[] getDocumentFile(String id) {
+	public FileDocument getDocumentFile(String id) {
 		FileDocument document = docDao.load(id);
         if(document!=null) {
-            return document.getFileData();
+            return document;
         } else {
             return null;
         }
