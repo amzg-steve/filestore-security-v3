@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd">
+
+	<cache name="jwtTokenCache" 
+		eternal="false"
+		maxEntriesLocalHeap="400"
+      	maxEntriesLocalDisk="400" 
+		maxElementsInMemory="0"
+		overflowToDisk="false"
+		timeToLiveSeconds="300" 
+		memoryStoreEvictionPolicy="LFU">
+		<persistence strategy="none" />
+	</cache>
+
+</ehcache>

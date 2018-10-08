@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class TokenAuthRequest implements Serializable{
+public class LoginUser implements Serializable{
 
 	private static final long serialVersionUID = 901821181867105280L;
 	
@@ -16,12 +16,12 @@ public class TokenAuthRequest implements Serializable{
 	@NonNull
 	private String password;
 
-	public TokenAuthRequest(String username, String password) {
+	public LoginUser(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 	
-	public TokenAuthRequest() {
+	public LoginUser() {
 		super();
 	}
 

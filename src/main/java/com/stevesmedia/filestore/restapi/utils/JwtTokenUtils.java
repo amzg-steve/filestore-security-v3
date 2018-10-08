@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,11 +22,16 @@ import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
+import lombok.extern.log4j.Log4j2;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 @Component
+@Log4j2
 public class JwtTokenUtils {
-	
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	    
+	private static final Cache jwtTokensCache = CacheManager.getInstance().getCache("jwtTokenCache");
 
     private Clock clock = DefaultClock.INSTANCE;
 
@@ -53,13 +56,13 @@ public class JwtTokenUtils {
 	}
 	
     public Boolean validateToken(String token) {
-        return (!isTokenExpired(token));
+        return (!isTokenExpired(token) && cacheHasToken(token));
     }
 
 	private Date calculateExpirationDate(Date createdDate) {
     	Date expDate = new Date(createdDate.getTime() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS * 1000);
     	SimpleDateFormat formatter = new SimpleDateFormat("mm-dd-yyyy hh:mm:ss");  
-        logger.info("Date Format: " +formatter.format(expDate));
+        log.info("Date Format: " +formatter.format(expDate));
         return expDate;
 	}
 
@@ -95,6 +98,7 @@ public class JwtTokenUtils {
     }
 
     private Claims getAllClaimsFromToken(String token) {
+    	
         return Jwts.parser()
         		.setSigningKey(Constants.SIGNING_KEY)
         		.parseClaimsJws(token)
@@ -102,8 +106,29 @@ public class JwtTokenUtils {
     }
     
     private Boolean isTokenExpired(String token) {
+    	
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
+    
+	
+    public void storeTokenInCache(String token) {
+    	
+    	jwtTokensCache.put(new Element(token, "dummyVal"));
+    }
+
+    public boolean cacheHasToken(String token) {
+    	
+    	log.info("Tokens b4: " +jwtTokensCache.getSize() +"\n" +jwtTokensCache.getKeysNoDuplicateCheck());
+    	jwtTokensCache.evictExpiredElements();
+    	log.info("Tokens After: " +jwtTokensCache.getSize() +"\n" +jwtTokensCache.getKeysNoDuplicateCheck());
+
+    	return jwtTokensCache.get(token) != null;
+    }
+
+	public boolean removeTokenFromCache(String token) {
+		
+		return jwtTokensCache.remove(token);
+	}
 
 }
