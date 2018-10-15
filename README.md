@@ -11,7 +11,7 @@ Two users are currently loaded through the embedded H2 DB.
 * username: user pass: user
 
 
-In order to access the service APIs you need to first make a request for JWT token from the authorization server with the request body format like {"username": "admin","password": "admin"}. The expiration of token is set at 10 minutes. After a new token is generated, it will be maintained in a cache on the auth server for a user. This will be reused the next time if the user try to re-authorize with the token expiry period or from a different device.
+In order to access the service APIs you need to first make a request for JWT token from the authorization server with the request body format like {"username": "admin","password": "admin"}. The expiration of token is set at 10 minutes. After a new token is generated, it will be maintained in a cache on the auth server for a user. This will be re-used next time if the user tries to re-authorize within the token expiry period or from a different device.
 
 * POST **https://localhost:8443/authorize**
 
