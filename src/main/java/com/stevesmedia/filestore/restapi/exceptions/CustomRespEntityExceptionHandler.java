@@ -29,8 +29,8 @@ public class CustomRespEntityExceptionHandler extends ResponseEntityExceptionHan
 
 	}
 	
-	@ExceptionHandler(FileNotFoundException.class)
-	public final ResponseEntity<Object> handleFilNotFoundException(FileNotFoundException ex, WebRequest request) throws Exception {
+	@ExceptionHandler(ResourceNotFound.class)
+	public final ResponseEntity<Object> handleFilNotFoundException(ResourceNotFound ex, WebRequest request) throws Exception {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), 404, 
 				HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.NOT_FOUND);
