@@ -30,105 +30,120 @@ import net.sf.ehcache.Element;
 @Component
 @Log4j2
 public class JwtTokenUtils {
-	    
+
 	private static final Cache jwtTokensCache = CacheManager.getInstance().getCache("jwtTokenCache");
 
-    private Clock clock = DefaultClock.INSTANCE;
+	private Clock clock = DefaultClock.INSTANCE;
 
-    public String generateToken(Authentication auth) {
-		
-        final Date createdDate = clock.now();
-        String token =  null;
-        final Date expirationDate = calculateExpirationDate(createdDate);
-        Claims claims = Jwts.claims().setSubject(auth.getName());
-        claims.put(Constants.AUTHORITIES_KEY, auth.getAuthorities().stream().map(s -> s.toString()).collect(Collectors.toList()));
+	public String generateToken(Authentication auth) {
+
+		final Date createdDate = clock.now();
+		String token =  null;
+		final Date expirationDate = calculateExpirationDate(createdDate);
+		Claims claims = Jwts.claims().setSubject(auth.getName());
+		claims.put(Constants.AUTHORITIES_KEY, auth.getAuthorities().stream().map(s -> s.toString()).collect(Collectors.toList()));
 
 
-        token = Jwts.builder()
-        		.setClaims(claims)
-        		.setIssuedAt(createdDate)
-        		.setIssuer(Constants.TOKEN_ISSUER)
-        		.setExpiration(expirationDate)
-        		.signWith(SignatureAlgorithm.HS512, Constants.SIGNING_KEY)
-        		.compact();
-        
+		token = Jwts.builder()
+				.setClaims(claims)
+				.setIssuedAt(createdDate)
+				.setIssuer(Constants.TOKEN_ISSUER)
+				.setExpiration(expirationDate)
+				.signWith(SignatureAlgorithm.HS512, Constants.SIGNING_KEY)
+				.compact();
+
 		return token;
 	}
-	
-    public Boolean validateToken(String token) {
-        return (!isTokenExpired(token) && cacheHasToken(token));
-    }
+
+	public Boolean validateToken(String token, String userName) {
+		return (!isTokenExpired(token) && cacheHasToken(userName));
+	}
 
 	private Date calculateExpirationDate(Date createdDate) {
-    	Date expDate = new Date(createdDate.getTime() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS * 1000);
-    	SimpleDateFormat formatter = new SimpleDateFormat("mm-dd-yyyy hh:mm:ss");  
-        log.info("Date Format: " +formatter.format(expDate));
-        return expDate;
+		Date expDate = new Date(createdDate.getTime() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS * 1000);
+		SimpleDateFormat formatter = new SimpleDateFormat("mm-dd-yyyy hh:mm:ss");  
+		log.info("Date Format: " +formatter.format(expDate));
+		return expDate;
 	}
 
 
 	public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);		
+		return getClaimFromToken(token, Claims::getSubject);		
 	}
-	
-    public Date getIssuedAtDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getIssuedAt);
-    }
 
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
+	public Date getIssuedAtDateFromToken(String token) {
+		return getClaimFromToken(token, Claims::getIssuedAt);
+	}
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
-    }
-    
-    @SuppressWarnings("unchecked")
+	public Date getExpirationDateFromToken(String token) {
+		return getClaimFromToken(token, Claims::getExpiration);
+	}
+
+	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+		final Claims claims = getAllClaimsFromToken(token);
+		return claimsResolver.apply(claims);
+	}
+
+	@SuppressWarnings("unchecked")
 	public Collection<? extends GrantedAuthority> getAuthorities(String token) throws JsonParseException, JsonMappingException, IOException {
 
-        final  Claims claims = getAllClaimsFromToken(token);
+		final  Claims claims = getAllClaimsFromToken(token);
 
-        List<String> list =  claims.get(Constants.AUTHORITIES_KEY, List.class);
-    	final Collection<? extends GrantedAuthority> authorities = list
-    			.stream()
-                .map(authority -> new SimpleGrantedAuthority(authority))
-                .collect(Collectors.toList());
+		List<String> list =  claims.get(Constants.AUTHORITIES_KEY, List.class);
+		final Collection<? extends GrantedAuthority> authorities = list
+				.stream()
+				.map(authority -> new SimpleGrantedAuthority(authority))
+				.collect(Collectors.toList());
 		return authorities;
-    }
+	}
 
-    private Claims getAllClaimsFromToken(String token) {
-    	
-        return Jwts.parser()
-        		.setSigningKey(Constants.SIGNING_KEY)
-        		.parseClaimsJws(token)
-        		.getBody();
-    }
-    
-    private Boolean isTokenExpired(String token) {
-    	
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-    
-	
-    public void storeTokenInCache(String token) {
-    	
-    	jwtTokensCache.put(new Element(token, "dummyVal"));
-    }
+	private Claims getAllClaimsFromToken(String token) {
 
-    public boolean cacheHasToken(String token) {
-    	
-    	log.info("Tokens b4: " +jwtTokensCache.getSize() +"\n" +jwtTokensCache.getKeysNoDuplicateCheck());
-    	jwtTokensCache.evictExpiredElements();
-    	log.info("Tokens After: " +jwtTokensCache.getSize() +"\n" +jwtTokensCache.getKeysNoDuplicateCheck());
+		return Jwts.parser()
+				.setSigningKey(Constants.SIGNING_KEY)
+				.parseClaimsJws(token)
+				.getBody();
+	}
 
-    	return jwtTokensCache.get(token) != null;
-    }
+	private Boolean isTokenExpired(String token) {
 
-	public boolean removeTokenFromCache(String token) {
+		final Date expiration = getExpirationDateFromToken(token);
+		return expiration.before(new Date());
+	}
+
+
+	public static void storeTokenInCache(String reqUser, String token) {
+
+		jwtTokensCache.put(new Element(reqUser, token));
+	}
+
+	public static String fetchTokenFromCache(String reqUser) {
+
+		String token = null;
+		jwtTokensCache.evictExpiredElements();
 		
-		return jwtTokensCache.remove(token);
+		if(jwtTokensCache.get(reqUser) != null) {
+			token = (String) jwtTokensCache.get(reqUser).getObjectValue();
+		}
+		log.info("Token retrieved: " +token);
+
+		return token;
+	}
+
+	public static boolean cacheHasToken(String userName) {
+
+		log.info("Tokens b4: " +jwtTokensCache.getSize() +"\n" +jwtTokensCache.getKeysNoDuplicateCheck());
+
+		//clearing out expired tokens
+		jwtTokensCache.evictExpiredElements();
+		log.info("Tokens After: " +jwtTokensCache.getSize() +"\n" +jwtTokensCache.getKeysNoDuplicateCheck());
+
+		return jwtTokensCache.get(userName) != null;
+	}
+
+	public static boolean deleteTokenFromCache(String userId) {
+
+		return jwtTokensCache.remove(userId);
 	}
 
 }

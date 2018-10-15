@@ -7,14 +7,13 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * Meta data of a document from an archive managed by {@link FileUploaderService}.
  * @author steves
  */
 @Data
-@Log4j2
+//@Log4j2
 public class FileDocMetaData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
