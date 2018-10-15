@@ -73,7 +73,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 			logger.debug("security context was null, so authorizating user");
 
-			if (jwtTokenUtils.validateToken(authToken)) {
+			if (jwtTokenUtils.validateToken(authToken, username)) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						username, null, jwtTokenUtils.getAuthorities(authToken));
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -24,12 +24,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
-import com.stevesmedia.filestore.restapi.exceptions.FileNotFoundException;
+import com.stevesmedia.filestore.restapi.exceptions.ResourceNotFound;
 import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * REST web service for file uploading service.
@@ -43,7 +42,7 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @RequestMapping(value = "/fileUploader/api")
 @Api(value = "document")
-@Log4j2
+//@Log4j2
 public class MainFileOperationsController {
 	
 	@Autowired
@@ -100,7 +99,7 @@ public class MainFileOperationsController {
 		
 		List<FileDocMetaData> docs = fileUploaderService.findDocuments();
 		if (docs.isEmpty()) {
-			throw new FileNotFoundException("No files found at repo", null);
+			throw new ResourceNotFound("No files found at repo", null);
 
 		}
 		return new ResponseEntity<List<FileDocMetaData>>(fileUploaderService.findDocuments(),
@@ -123,7 +122,7 @@ public class MainFileOperationsController {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		FileDocument fileDoc = fileUploaderService.getDocumentFile(uuid);
 		if (fileDoc == null) {
-			throw new FileNotFoundException(uuid +" file not found", null);
+			throw new ResourceNotFound(uuid +" file not found", null);
 		}
 		String typeStr = fileDoc.getFileType();
         httpHeaders.setContentType(MediaType.valueOf(typeStr));

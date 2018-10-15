@@ -8,7 +8,7 @@
       	maxEntriesLocalDisk="400" 
 		maxElementsInMemory="0"
 		overflowToDisk="false"
-		timeToLiveSeconds="300" 
+		timeToLiveSeconds="600" 
 		memoryStoreEvictionPolicy="LFU">
 		<persistence strategy="none" />
 	</cache>
