@@ -26,11 +26,15 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-	@Autowired
 	public AuthenticationManager authenticationManager;
 
-	@Autowired
 	public JwtTokenUtils jwtTokenUtils;
+
+	@Autowired
+	public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenUtils jwtTokenUtils) {
+		this.authenticationManager = authenticationManager;
+		this.jwtTokenUtils = jwtTokenUtils;
+	}
 
 	/**
 	 * Authorize user, generate jwt token and manage tokens through ehCache

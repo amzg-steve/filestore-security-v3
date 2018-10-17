@@ -23,9 +23,13 @@ import com.stevesmedia.filestore.restapi.service.security.AuthService;
 @RestController
 public class AuthController {
 	
-	@Autowired
 	private AuthService authService;
-	
+
+	@Autowired
+	public AuthController(AuthService authService) {
+		this.authService = authService;
+	}
+
 	@PostMapping(value="/authorize")
 	public ResponseEntity<?> generateJWT(@RequestBody @Valid LoginUser tokenReq) {
 		
@@ -40,7 +44,7 @@ public class AuthController {
 	 */
 	@DeleteMapping(value="/revokeToken/user/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-	public Response<String> revokeToken(@PathVariable @Valid String userId) {
+	public Response<String> revokeToken(@PathVariable  String userId) {
 		
 		return authService.deleteToken(userId);
 	}

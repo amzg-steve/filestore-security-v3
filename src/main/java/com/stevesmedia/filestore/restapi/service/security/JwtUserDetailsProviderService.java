@@ -17,8 +17,12 @@ import com.stevesmedia.filestore.restapi.repository.UserRepository;
 @Service
 public class JwtUserDetailsProviderService implements UserDetailsService {
 
-	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	public JwtUserDetailsProviderService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

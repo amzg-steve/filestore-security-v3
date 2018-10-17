@@ -16,7 +16,7 @@ public class Response<T> extends Resources<T> {
 	private boolean status;
 	private HttpStatus httpStatus;
 	private List<String> message;
-	private Resource<T> result;
+	private Resource<T> resultData;
 	
 	public Response() {
 		
@@ -27,7 +27,7 @@ public class Response<T> extends Resources<T> {
 		this.status = status;
 		this.httpStatus = httpStatus;
 		this.message = message;
-		this.result = result;
+		this.resultData = result;
 	}
 
 	public Response(List<String> message, boolean status, Date timeStamp, HttpStatus httpStatus) {

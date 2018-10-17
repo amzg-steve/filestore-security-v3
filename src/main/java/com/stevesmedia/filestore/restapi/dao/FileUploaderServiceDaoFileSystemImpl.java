@@ -21,9 +21,6 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.FileSystemUtils;
 
@@ -44,15 +41,13 @@ public class FileUploaderServiceDaoFileSystemImpl implements FileUploaderService
 		createDirectory(ROOT_DIR);
 	}
 
-	public HttpEntity<String> deleteAllFiles() {
+	public Boolean deleteAllFiles() {
 		
 		if (FileSystemUtils.deleteRecursively(new File(ROOT_DIR))) {
 			createDirectory(ROOT_DIR);
-			return new ResponseEntity<String>("Files deleted", HttpStatus.OK);
-			
+			return true;
 		} else {
-			return new ResponseEntity<String>("File deletion action failed", HttpStatus.INTERNAL_SERVER_ERROR);
-
+			return false;
 		}
 	}
 	

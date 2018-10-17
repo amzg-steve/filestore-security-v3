@@ -1,15 +1,19 @@
 package com.stevesmedia.filestore.restapi.service;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.stevesmedia.filestore.restapi.dao.FileUploaderServiceDao;
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
+import com.stevesmedia.filestore.restapi.domainmodel.Response;
 
 /**
  * The service implementation to save, find and get documents through a filesystem based storage. 
@@ -21,9 +25,13 @@ public class FileUploaderServiceImpl implements FileUploaderService, Serializabl
 
 	private static final long serialVersionUID = 1L;
 	
-    @Autowired
     private  FileUploaderServiceDao docDao;
     
+    @Autowired
+	public FileUploaderServiceImpl(FileUploaderServiceDao docDao) {
+		this.docDao = docDao;
+	}
+
 	@Override
 	public FileDocMetaData save(FileDocument document) {
 		docDao.insert(document); 
@@ -46,8 +54,14 @@ public class FileUploaderServiceImpl implements FileUploaderService, Serializabl
 	}
 	
 	@Override
-	public HttpEntity<String> deleteAll() {
-		return docDao.deleteAllFiles();
+	public Response<String> deleteAll() {
+		
+		boolean deletionStatus =  false;
+		deletionStatus = docDao.deleteAllFiles();
+		if (!deletionStatus) {
+			throw new RuntimeException("File deletion action failed", null);
+		}
+		return new Response<String>(Collections.singletonList("All files deleted"), true, new Date(), HttpStatus.OK);
 	}
 
 }
