@@ -31,8 +31,8 @@ The following service APIs are available. While invoking an api please include t
 * **Retrieve all files from store operation:**
 * GET https://localhost:8443/fileUploader/api/files
 
-* **Delete all files from filesystem operation (Requires 'admin' credentials):**
-* DELETE https://localhost:8443/fileUploader/api/files/deleteAll
+* **Delete all files from filesystem operation (Requires 'admin' authority):**
+* DELETE https://localhost:8443/fileUploader/api/files
 
 * **Swagger ui:**
 * https://localhost:8443/swagger-ui.html

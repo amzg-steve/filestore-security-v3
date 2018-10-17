@@ -32,7 +32,7 @@ public interface FileUploaderServiceDao {
 	 */
 	FileDocument load(String uuid);
 	
-	HttpEntity<String> deleteAllFiles();
+	Boolean deleteAllFiles();
 
 }
 

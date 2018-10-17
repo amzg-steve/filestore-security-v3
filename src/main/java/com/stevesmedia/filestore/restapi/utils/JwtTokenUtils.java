@@ -120,12 +120,12 @@ public class JwtTokenUtils {
 	public static String fetchTokenFromCache(String reqUser) {
 
 		String token = null;
+		//clearing out expired tokens
 		jwtTokensCache.evictExpiredElements();
-		
 		if(jwtTokensCache.get(reqUser) != null) {
 			token = (String) jwtTokensCache.get(reqUser).getObjectValue();
 		}
-		log.info("Token retrieved: " +token);
+		log.info("Token retrieved from cache: " +token);
 
 		return token;
 	}

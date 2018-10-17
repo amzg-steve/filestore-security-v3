@@ -24,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocMetaData;
 import com.stevesmedia.filestore.restapi.domainmodel.FileDocument;
+import com.stevesmedia.filestore.restapi.domainmodel.Response;
 import com.stevesmedia.filestore.restapi.exceptions.ResourceNotFound;
 import com.stevesmedia.filestore.restapi.service.FileUploaderService;
 
@@ -133,12 +134,12 @@ public class MainFileOperationsController {
 	/**
 	 * Deletes all files from repo
 	 * 
-	 * Url: /fileUploader/api/files/deleteAll [DELETE]
+	 * Url: /fileUploader/api/files [DELETE]
 	 */
-	@DeleteMapping(value="/files/deleteAll")
+	@DeleteMapping(value="/files")
 	@ApiOperation(value = "Operation to delete all files from repository")
     @PreAuthorize("hasRole('ADMIN')")
-	public HttpEntity<String> deleteAllFiles() {
+	public Response<String> deleteAllFiles() {
 	
 		return fileUploaderService.deleteAll();
 	}
